@@ -1,6 +1,8 @@
 import express from 'express';
-import { dbConnect } from './config/dbconfig.js';
+import { dbConnect } from './src/config/dbconfig.js';
 import cors from 'cors';
+import authRoutes from './src/routes/authRoutes.js'
+import { errorHandler } from './src/middleware/errorHandler.js';
 // import dotenv from 'dotenv';
 
 const PORT = process.env.PORT || 8000;
@@ -23,6 +25,11 @@ dbConnect().then(() => {
     })
 }).catch((error) => console.log(error))
 
+
+// API END POINTS
+app.use("/api/v1/auth", authRoutes);
+// Global Error handler
+app.use(errorHandler);
 
 
 

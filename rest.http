@@ -1,5 +1,17 @@
-@rootUrl = http://localhost:8000/
+@rootUrl = http://localhost:8000
 #API LIST
 
 ###CHECK SERVER STATUS
 GET {{rootUrl}}
+
+### User Registration
+POST {{rootUrl}}/api/v1/auth/register
+Content-Type: application/json
+
+{
+    "fname":"Bhavesh",
+    "lname":"Sadhu",
+    "email":"a@b.com",
+    "phone":"0123456789",
+    "password":"asdf.asdf@321"
+}
