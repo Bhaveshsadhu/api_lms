@@ -1,8 +1,9 @@
-import { createNewSession } from "../models/sesson/sessionModel.js";
-import { RegisterNewUser } from "../models/user/UserModel.js";
+import { createNewSession, findSessionByToken } from "../models/sesson/sessionModel.js";
+import { findUserByEmail, RegisterNewUser } from "../models/user/UserModel.js";
 import { userActivationUrlEmail } from "../services/email/emailService.js";
 import { hashPassword } from "../utils/bcrypt.js";
 import { v4 as uuidv4 } from 'uuid';
+import { strongPasswordRegex } from "../utils/regex.js";
 
 
 // Create New User
@@ -12,8 +13,16 @@ export const addNewUser = async (req, res, next) => {
         // receive the user data
         // encrypt the password
         const { password } = req.body;
+        // added another layer of security of password
+        if (!strongPasswordRegex.test(password)) {
+            return res.status(400).json({
+                status: 'error',
+                message:
+                    'Password must be at least 8 characters long and include uppercase, lowercase, number, and special character.',
+            });
+        }
         req.body.password = hashPassword(password);
-        console.log(req.body)
+        // console.log(req.body)
         // insert useer into DB
         const result = await RegisterNewUser(req.body);
         if (result?._id) {
@@ -38,7 +47,8 @@ export const addNewUser = async (req, res, next) => {
                 if (emailID) {
                     res.json({
                         status: "success",
-                        message: "We have send Verification link to your email please check your email"
+                        message: "We have send Verification link to your email please check your email",
+                        url
                     })
                     return;
                 }
@@ -57,3 +67,53 @@ export const addNewUser = async (req, res, next) => {
         next(error);
     }
 }
+
+export const verfiyUserFromEmail = async (req, res, next) => {
+    try {
+
+        const { token } = req.body;
+        // find sesstion is valid or not
+        const session = await findSessionByToken(token);
+        // console.log(session)
+
+        // if session is not valid
+        if (!session) {
+            res.json({
+                status: "error",
+                message: "Token expired.. Please do Registration Again"
+            })
+            return;
+        }
+        else {
+            // if session is valid
+            if (session?._id) {
+                // find user by email id
+                const user = await findUserByEmail(session.association);
+
+                // if already User is Active
+                if (user.status === "active") {
+                    res.json({
+                        status: "success",
+                        message: "User Already activated.."
+                    })
+                    return;
+                }
+                // change status to ACTIVE
+                user.status = "active";
+                // UPDATE STATUS TO ACTIVE
+                const result = await RegisterNewUser(user);
+                result?._id ?
+                    res.json({ status: 'success', message: 'Token is valid and User is Now Active', result })
+                    :
+                    res.json({ status: 'success', message: 'Token Not Valid' });
+                // console.log(result)
+            }
+
+        }
+
+
+    } catch (error) {
+        next(error)
+    }
+
+};

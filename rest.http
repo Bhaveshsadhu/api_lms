@@ -11,7 +11,15 @@ Content-Type: application/json
 {
     "fname":"Bhavesh",
     "lname":"Sadhu",
-    "email":"a3@b.com",
+    "email":"a8@b.com",
     "phone":"0123456789",
-    "password":"asdf.asdf@321"
+    "password":"123"
+}
+
+### User Verification from Email
+POST {{rootUrl}}/api/v1/auth/verify
+Content-Type: application/json
+
+{
+    "token":"e2795280-b71d-40c2-8a91-e866c3e28ae7"
 }
