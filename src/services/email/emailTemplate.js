@@ -1,10 +1,10 @@
 export const userActivationUrlEmailTemplate = ({ url, email, name }) => {
-    return {
-        from: `"Local Library" <${email}>`, // sender address
-        to: email, // list of receivers
-        subject: "Action Required - Activate Your new Account", // Subject line
-        text: `Hello ${name} follow link to activate your account${url}`, // plain text body
-        html: `<p>Hello ${name}</p>
+  return {
+    from: `"Local Library" <${email}>`, // sender address
+    to: email, // list of receivers
+    subject: "Action Required - Activate Your new Account", // Subject line
+    text: `Hello ${name} follow link to activate your account${url}`, // plain text body
+    html: `<p>Hello ${name}</p>
                 
                 <br></br>
                 <p>Your account has been created click button below to activate your account</p>
@@ -23,6 +23,23 @@ export const userActivationUrlEmailTemplate = ({ url, email, name }) => {
   Click Here
 </a>
 `, // html body
-    }
+  }
 };
 
+export const userActivatedEmailTemplate = ({ email, name }) => {
+  return {
+    from: `"Local Library" <${email}>`, // sender address
+    to: email, // list of receivers
+    subject: "USER ACTIVATED ", // Subject line
+    text: `Hello ${name} `, // plain text body
+    html: `<p>Hello ${name}</p>
+              
+              <br></br>
+              <p>Your account has been Acticated, Please Login to your account</p>
+              
+              <br></br>
+              <br></br>
+              
+`, // html body
+  }
+};

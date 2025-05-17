@@ -11,15 +11,16 @@ Content-Type: application/json
 {
     "fname":"Bhavesh",
     "lname":"Sadhu",
-    "email":"a8@b.com",
+    "email":"a93@b.com",
     "phone":"0123456789",
-    "password":"123"
+    "password":"TesAAaa#$%t@123"
 }
 
 ### User Verification from Email
-POST {{rootUrl}}/api/v1/auth/verify
+POST {{rootUrl}}/api/v1/auth/activate-user
 Content-Type: application/json
 
 {
-    "token":"e2795280-b71d-40c2-8a91-e866c3e28ae7"
+    "token":"1cb97654-f9a9-4d77-949d-dc0094d84587",
+    "sessionId":"1cb97654-f9a9-4d77-949d-dc0094d84587"
 }
