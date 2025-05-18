@@ -1,12 +1,22 @@
 import { DataValidation } from "./dataValidation.js"
+import {
+    EMAIL_REQ,
+    FNAME_REQ,
+    LNAME_REQ,
+    PASSWORD_REQ,
+    PHONE_REQ,
+    SESSIONID_REQ,
+    TOKEN_REQ
+} from "./joiConst.js"
+
 
 export const NewUserDataValidation = (req, res, next) => {
     const obj = {
-        fname: Joi.string().min(3).max(30).required(),
-        lname: Joi.string().min(3).max(30).required(),
-        email: Joi.string().email({ minDomainSegments: 2 }).required(),
-        phone: Joi.number(),
-        password: Joi.string().required(),
+        fname: FNAME_REQ,
+        lname: LNAME_REQ,
+        email: EMAIL_REQ,
+        phone: PHONE_REQ,
+        password: PASSWORD_REQ,
 
     }
     DataValidation({ req, res, next, obj })
@@ -14,8 +24,8 @@ export const NewUserDataValidation = (req, res, next) => {
 export const VerifyUserFromEmailDataValidation = (req, res, next) => {
 
     const obj = {
-        token: Joi.string().min(3).max(50).required(),
-        sessionId: Joi.string().min(3).max(50).required(),
+        token: TOKEN_REQ,
+        sessionId: SESSIONID_REQ,
     }
     DataValidation({ req, res, next, obj })
 }
