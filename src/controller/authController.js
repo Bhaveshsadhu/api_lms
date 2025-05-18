@@ -1,9 +1,10 @@
 import { createNewSession, findSessionByToken } from "../models/sesson/sessionModel.js";
 import { findUserByEmail, RegisterNewUser } from "../models/user/UserModel.js";
 import { userActivationUrlEmail, userActivatedEmail } from "../services/email/emailService.js";
-import { hashPassword } from "../utils/bcrypt.js";
+import { comparePassword, hashPassword } from "../utils/bcrypt.js";
 import { v4 as uuidv4 } from 'uuid';
 import { isStrongPassword } from "../utils/regex.js";
+import { getJwts } from "../utils/jwt.js";
 // import { userActivationUrlEmailTemplate } from "../services/email/emailTemplate.js";
 
 
@@ -136,3 +137,33 @@ export const verfiyUserFromEmail = async (req, res, next) => {
     }
 
 };
+
+export const loginUser = async (req, res, next) => {
+    try {
+        // get email from request
+        const { email, password } = req.body;
+
+        // get user by email
+        const user = await findUserByEmail(email);
+
+        // console.log(user)
+
+        // if user retrived successfully
+        if (user?._id) {
+            // check password is correct or not
+            if (comparePassword(password, user.password)) {
+                // if password is correct than return accessJWT AND refreshJWTS
+                const jwts = await getJwts(email)
+                // console.log(jwts)
+                res.json({
+                    status: "success",
+                    message: "Login Success!!!",
+                    jwts
+                })
+            }
+
+        }
+    } catch (error) {
+        next(error)
+    }
+}

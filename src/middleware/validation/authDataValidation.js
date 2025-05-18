@@ -19,6 +19,7 @@ export const NewUserDataValidation = (req, res, next) => {
         password: PASSWORD_REQ,
 
     }
+    // console.log(obj)
     DataValidation({ req, res, next, obj })
 }
 export const VerifyUserFromEmailDataValidation = (req, res, next) => {
@@ -26,6 +27,15 @@ export const VerifyUserFromEmailDataValidation = (req, res, next) => {
     const obj = {
         token: TOKEN_REQ,
         sessionId: SESSIONID_REQ,
+    }
+    DataValidation({ req, res, next, obj })
+}
+
+export const LoginDataValidation = (req, res, next) => {
+
+    const obj = {
+        email: EMAIL_REQ,
+        password: PASSWORD_REQ,
     }
     DataValidation({ req, res, next, obj })
 }

@@ -17,10 +17,9 @@ export const PHONE_REQ = PHONE.required()
 export const PASSWORD = Joi.string().min(8).max(30)
 export const PASSWORD_REQ = PASSWORD.required()
 
+// VERIFICATION FROM EMAIL CONSTS
 export const TOKEN = Joi.string().min(3).max(50)
 export const TOKEN_REQ = TOKEN.required()
-
-// VERIFICATION FROM EMAIL CONSTS
 
 export const SESSIONID = Joi.string().min(3).max(50)
 export const SESSIONID_REQ = SESSIONID.required()

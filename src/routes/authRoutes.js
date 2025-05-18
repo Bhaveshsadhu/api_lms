@@ -1,6 +1,6 @@
 import express from 'express'
-import { addNewUser, verfiyUserFromEmail } from '../controller/authController.js';
-import { NewUserDataValidation, VerifyUserFromEmailDataValidation } from '../middleware/validation/authDataValidation.js';
+import { addNewUser, loginUser, verfiyUserFromEmail } from '../controller/authController.js';
+import { LoginDataValidation, NewUserDataValidation, VerifyUserFromEmailDataValidation } from '../middleware/validation/authDataValidation.js';
 
 const router = express.Router();
 
@@ -12,6 +12,9 @@ router.post("/register", NewUserDataValidation, addNewUser)
 
 // VERIFY USER FROM EMAIL LINK
 router.post("/activate-user", VerifyUserFromEmailDataValidation, verfiyUserFromEmail)
+
+// LOGIN USER
+router.post("/login", LoginDataValidation, loginUser)
 
 
 export default router; 
