@@ -1,6 +1,6 @@
-import { createNewSession, findSessionByToken } from "../models/sesson/sessionModel.js";
-import { findUserByEmail, RegisterNewUser } from "../models/user/UserModel.js";
-import { userActivationUrlEmail, userActivatedEmail } from "../services/email/emailService.js";
+import { createNewSession, findSessionByToken, deleteSession } from "../models/sesson/sessionModel.js";
+import { findUserByEmail, RegisterNewUser, updateUser } from "../models/user/UserModel.js";
+import { userActivationUrlEmail, userActivatedEmail, sendPasswordResetEmail } from "../services/email/emailService.js";
 import { comparePassword, hashPassword } from "../utils/bcrypt.js";
 import { v4 as uuidv4 } from 'uuid';
 import { isStrongPassword } from "../utils/regex.js";
@@ -167,3 +167,115 @@ export const loginUser = async (req, res, next) => {
         next(error)
     }
 }
+
+export const requestPasswordReset = async (req, res, next) => {
+    try {
+        const { email } = req.body;
+
+        const user = await findUserByEmail(email);
+
+        if (!user) {
+            // Generic message for security
+            return res.json({
+                status: "success", // Still success to prevent email enumeration
+                message: "If an account with this email exists, a password reset link has been sent.",
+            });
+        }
+
+        // User found, proceed to create session and send email
+        const token = uuidv4();
+        const sessionData = {
+            token,
+            association: user.email,
+            type: 'passwordReset',
+            durationInSeconds: 3600, // 1 hour
+        };
+
+        const session = await createNewSession(sessionData);
+
+        if (session?._id) {
+            const url = `${process.env.ROOT_URL}/reset-password?token=${token}&sessionId=${session._id}`;
+
+            const emailSent = await sendPasswordResetEmail({
+                email: user.email,
+                url,
+                name: user.fname,
+            });
+
+            if (emailSent) {
+                return res.json({
+                    status: "success",
+                    message: "Password reset link sent to your email. Please check your inbox.",
+                });
+            } else {
+                return res.json({
+                    status: "error",
+                    message: "Failed to send password reset email. Please try again.",
+                });
+            }
+        } else {
+            return res.json({
+                status: "error",
+                message: "Failed to create a password reset session. Please try again.",
+            });
+        }
+    } catch (error) {
+        next(error);
+    }
+};
+
+export const resetPassword = async (req, res, next) => {
+    try {
+        const { token, sessionId, password } = req.body;
+
+        // Validate password strength
+        if (!isStrongPassword(password)) {
+            return res.status(400).json({
+                status: 'error',
+                message: 'Password must be at least 8 characters long and include uppercase, lowercase, number, and special character.',
+            });
+        }
+
+        const session = await findSessionByToken(token);
+
+        // Crucial Validation
+        if (!session || session._id.toString() !== sessionId || session.type !== 'passwordReset') {
+            return res.json({
+                status: "error",
+                message: "Invalid or expired reset token. Please try again.",
+            });
+        }
+
+        // Token is valid, proceed to find user and update password
+        const user = await findUserByEmail(session.association);
+
+        if (!user) {
+            // This should be rare if the session is valid, but good for robustness
+            return res.status(500).json({
+                status: "error",
+                message: "User associated with this token not found. Please contact support.",
+            });
+        }
+
+        const hashedPassword = hashPassword(password);
+
+        const updatedUser = await updateUser({ email: session.association }, { password: hashedPassword });
+
+        if (updatedUser?._id) {
+            // Password update successful, delete the session
+            await deleteSession({ token });
+
+            return res.json({
+                status: "success",
+                message: "Password has been reset successfully. You can now login with your new password.",
+            });
+        } else {
+            return res.status(500).json({
+                status: "error",
+                message: "Failed to update password. Please try again.",
+            });
+        }
+    } catch (error) {
+        next(error);
+    }
+};

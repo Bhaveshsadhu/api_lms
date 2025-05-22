@@ -22,6 +22,22 @@ export const NewUserDataValidation = (req, res, next) => {
     // console.log(obj)
     DataValidation({ req, res, next, obj })
 }
+
+export const ResetPasswordDataValidation = (req, res, next) => {
+    const obj = {
+        token: TOKEN_REQ,
+        sessionId: SESSIONID_REQ,
+        password: PASSWORD_REQ, // Basic Joi validation, strength check will be in controller
+    }
+    DataValidation({ req, res, next, obj })
+}
+
+export const RequestPasswordResetDataValidation = (req, res, next) => {
+    const obj = {
+        email: EMAIL_REQ,
+    }
+    DataValidation({ req, res, next, obj })
+}
 export const VerifyUserFromEmailDataValidation = (req, res, next) => {
 
     const obj = {

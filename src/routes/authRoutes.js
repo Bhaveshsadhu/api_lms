@@ -1,6 +1,6 @@
 import express from 'express'
-import { addNewUser, loginUser, verfiyUserFromEmail } from '../controller/authController.js';
-import { LoginDataValidation, NewUserDataValidation, VerifyUserFromEmailDataValidation } from '../middleware/validation/authDataValidation.js';
+import { addNewUser, loginUser, verfiyUserFromEmail, requestPasswordReset, resetPassword } from '../controller/authController.js';
+import { LoginDataValidation, NewUserDataValidation, VerifyUserFromEmailDataValidation, RequestPasswordResetDataValidation, ResetPasswordDataValidation } from '../middleware/validation/authDataValidation.js';
 
 const router = express.Router();
 
@@ -15,6 +15,12 @@ router.post("/activate-user", VerifyUserFromEmailDataValidation, verfiyUserFromE
 
 // LOGIN USER
 router.post("/login", LoginDataValidation, loginUser)
+
+// REQUEST PASSWORD RESET
+router.post("/request-password-reset", RequestPasswordResetDataValidation, requestPasswordReset);
+
+// RESET PASSWORD
+router.post("/reset-password", ResetPasswordDataValidation, resetPassword);
 
 
 export default router; 
