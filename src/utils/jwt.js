@@ -17,6 +17,15 @@ export const createAccessJWT = async (email) => {
     return newSession?._id ? token : null;
 }
 
+// verify accessJWT
+export const verifyAccessJWT = token => {
+    try {
+        return jwt.verify(token, process.env.ACCESSJWT_SCERET,)
+    } catch (error) {
+        return error.message
+    }
+}
+
 export const createRefreshJWT = async (email) => {
     // create
     const refreshJWT = jwt.sign({ email }, process.env.REFRESHJWT_SCERET, { expiresIn: "30d" });//30 days

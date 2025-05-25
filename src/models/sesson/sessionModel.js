@@ -7,3 +7,9 @@ export const createNewSession = sessionObj => {
 export const findSessionByToken = async (token) => {
     return await sessionSchema.findOne({ token });
 };
+export const getSession = (filter) => {
+    return sessionSchema.findOne(filter);
+}
+export const deleteSession = (filter) => {
+    return sessionSchema.findOneAndDelete(filter);
+}

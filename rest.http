@@ -33,3 +33,7 @@ Content-Type: application/json
     "email":"bhavesh.sadhu@gmail.com",
     "password":"TesAAaa#$%t@123"
 }
+
+### USER PROFILE
+GET {{rootUrl}}/api/v1/users/profile
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImJoYXZlc2guc2FkaHVAZ21haWwuY29tIiwiaWF0IjoxNzQ4MTY4ODk5LCJleHAiOjE3NDgxNjk3OTl9.qUdy0JJp9VpSSvSZwvcIa2zeWa8WlZrs2xqmCYk6fyg
