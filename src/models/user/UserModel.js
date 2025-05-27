@@ -13,3 +13,6 @@ export const findUserByEmail = async (email) => {
 export const updateUser = (filter, update) => {
     return UserSchema.findOneAndUpdate(filter, update, { new: true })
 }
+export const findOneUser = (filter) => {
+    return UserSchema.findOne(filter)
+}

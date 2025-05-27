@@ -146,10 +146,10 @@ export const loginUser = async (req, res, next) => {
         // get user by email
         const user = await findUserByEmail(email);
 
-        // console.log(user)
+        console.log(user)
 
         // if user retrived successfully
-        if (user?._id) {
+        if (user?._id && user.status === 'active') {
             // check password is correct or not
             if (comparePassword(password, user.password)) {
                 // if password is correct than return accessJWT AND refreshJWTS

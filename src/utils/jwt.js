@@ -12,7 +12,7 @@ export const createAccessJWT = async (email) => {
     }
 
     const newSession = await createNewSession(obj)
-    console.log(newSession)
+    // console.log(newSession)
 
     return newSession?._id ? token : null;
 }
@@ -21,6 +21,14 @@ export const createAccessJWT = async (email) => {
 export const verifyAccessJWT = token => {
     try {
         return jwt.verify(token, process.env.ACCESSJWT_SCERET,)
+    } catch (error) {
+        return error.message
+    }
+}
+// verify refreshJWT
+export const verifyRefreshJWT = token => {
+    try {
+        return jwt.verify(token, process.env.REFRESHJWT_SCERET,)
     } catch (error) {
         return error.message
     }

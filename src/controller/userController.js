@@ -9,7 +9,7 @@ export const userProfile = async (req, res, next) => {
         user.password = undefined
         user.__v = undefined
         user.refreshJWT = undefined
-        console.log(user)
+        // console.log(user)
 
         res.json({
             status: "success",
