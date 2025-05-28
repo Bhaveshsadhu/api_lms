@@ -8,7 +8,7 @@ export const createAccessJWT = async (email) => {
     const obj = {
         token,
         association: email,
-        expire: new Date(Date.now() + 1000 * 60 * 15), //15m
+        expire: new Date(Date.now() + 1000 * 60 * 1), //15m
     }
 
     const newSession = await createNewSession(obj)

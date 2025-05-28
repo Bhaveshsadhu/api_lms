@@ -146,7 +146,7 @@ export const loginUser = async (req, res, next) => {
         // get user by email
         const user = await findUserByEmail(email);
 
-        console.log(user)
+        // console.log(user)
 
         // if user retrived successfully
         if (user?._id && user.status === 'active') {

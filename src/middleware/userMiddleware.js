@@ -15,6 +15,7 @@ export const userMiddleware = async (req, res, next) => {
             if (decoded.email) {
                 // check its exits in session table
                 const ifFound = await getSession({ token })
+                // console.log(ifFound)
                 if (ifFound?._id) {
                     // get user by email
                     const user = await findUserByEmail(decoded.email)
@@ -23,6 +24,12 @@ export const userMiddleware = async (req, res, next) => {
                         req.userInfo = user
                         return next()
                     }
+                }
+                else {
+                    res.json({
+                        status: "error",
+                        message: "jwt expired"
+                    })
                 }
             }
             else {
