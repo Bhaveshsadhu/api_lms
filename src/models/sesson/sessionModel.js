@@ -13,3 +13,6 @@ export const getSession = (filter) => {
 export const deleteSession = (filter) => {
     return sessionSchema.findOneAndDelete(filter);
 }
+export const deleteManySession = (filter) => {
+    return sessionSchema.deleteMany(filter)
+}

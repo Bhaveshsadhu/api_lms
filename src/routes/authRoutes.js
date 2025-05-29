@@ -1,5 +1,5 @@
 import express from 'express'
-import { addNewUser, loginUser, verfiyUserFromEmail } from '../controller/authController.js';
+import { addNewUser, loginUser, logoutUser, verfiyUserFromEmail } from '../controller/authController.js';
 import { LoginDataValidation, NewUserDataValidation, VerifyUserFromEmailDataValidation } from '../middleware/validation/authDataValidation.js';
 import { renewAccessJwtMiddleware } from '../middleware/userMiddleware.js';
 
@@ -19,6 +19,9 @@ router.post("/login", LoginDataValidation, loginUser)
 
 // RENEW ACCESSJWT
 router.get("/renew-jwt", renewAccessJwtMiddleware)
+
+// RENEW ACCESSJWT
+router.get("/logout", logoutUser)
 
 
 export default router; 

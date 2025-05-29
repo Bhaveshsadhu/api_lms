@@ -1,10 +1,10 @@
-import { createNewSession, findSessionByToken } from "../models/sesson/sessionModel.js";
-import { findUserByEmail, RegisterNewUser } from "../models/user/UserModel.js";
+import { createNewSession, deleteManySession, findSessionByToken } from "../models/sesson/sessionModel.js";
+import { findUserByEmail, RegisterNewUser, updateUser } from "../models/user/UserModel.js";
 import { userActivationUrlEmail, userActivatedEmail } from "../services/email/emailService.js";
 import { comparePassword, hashPassword } from "../utils/bcrypt.js";
 import { v4 as uuidv4 } from 'uuid';
 import { isStrongPassword } from "../utils/regex.js";
-import { getJwts } from "../utils/jwt.js";
+import { getJwts, verifyAccessJWT } from "../utils/jwt.js";
 // import { userActivationUrlEmailTemplate } from "../services/email/emailTemplate.js";
 
 
@@ -166,4 +166,28 @@ export const loginUser = async (req, res, next) => {
     } catch (error) {
         next(error)
     }
+}
+
+export const logoutUser = async (req, res, next) => {
+    try {
+        const { authorization } = req.headers
+        const token = authorization.split(" ")[1]
+        const { email } = verifyAccessJWT(token)
+        if (email) {
+            const user = await findUserByEmail(email)
+            if (user?._id) {
+                // empty refreshJWT in user table
+                const changeRefreshJWT = await updateUser({ email: email }, { refreshJWT: "" })
+                // remove all session from session table
+                const deleteMany = await deleteManySession({ association: email })
+                res.json({
+                    status: "success",
+                    message: "user Logout Successfully.."
+                })
+            }
+        }
+    } catch (error) {
+        next(error)
+    }
+
 }
