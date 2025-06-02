@@ -39,3 +39,10 @@ export const LoginDataValidation = (req, res, next) => {
     }
     DataValidation({ req, res, next, obj })
 }
+
+export const ForgetPasswordValidation = (req, res, next) => {
+    const obj = {
+        email: EMAIL_REQ,
+    }
+    DataValidation({ req, res, next, obj })
+}

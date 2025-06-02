@@ -43,3 +43,21 @@ export const userActivatedEmailTemplate = ({ email, name }) => {
 `, // html body
   }
 };
+export const forgetPasswordEmailTemplate = ({ email, name, link }) => {
+  return {
+    from: `"Local Library" <${email}>`, // sender address
+    to: email, // list of receivers
+    subject: "Forget Password ", // Subject line
+    text: `Hello ${name} `, // plain text body
+    html: `<p>Hello ${name}</p>
+              
+              <br></br>
+              <h2>Hello ${name}</h2>
+              <p>Here is your Link to reset the password Please click this Link to reset the password</p>
+              <a href="${link}"> RESET PASSWORD</a>
+              <br></br>
+              <br></br>
+              
+`, // html body
+  }
+};

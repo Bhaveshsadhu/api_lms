@@ -35,7 +35,7 @@ export const userMiddleware = async (req, res, next) => {
             else {
                 decoded === "jwt expired" ? res.json({
                     status: "error",
-                    message: "jwt expired"
+                    message: "jwt expired",
                 }) :
                     res.json({
                         status: "error",

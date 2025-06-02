@@ -31,7 +31,7 @@ Content-Type: application/json
 
 {
     "email":"bhavesh.sadhu@gmail.com",
-    "password":"TesAAaa#$%t@123"
+    "password":"Testingtesting@12345678"
 }
 
 ### USER PROFILE
@@ -44,3 +44,29 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImJoYXZlc
 ### Logout User
 GET {{rootUrl}}/api/v1/auth/logout
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImJoYXZlc2guc2FkaHVAZ21haWwuY29tIiwiaWF0IjoxNzQ4NDg1ODgyLCJleHAiOjE3NDg0ODY3ODJ9.CArfW7lkIYDyTj9HcZWS5pBe5rly0qjNr5HZmp5hRPY
+
+### FORGET PASSWORD 
+POST {{rootUrl}}/api/v1/users/forget-password
+Content-Type: application/json
+
+{
+    "email":"bhavesh.sadhu@gmail.com"
+    
+}
+
+### Reset Password
+POST {{rootUrl}}/api/v1/users/reset-password
+Content-Type: application/json
+
+{
+    "token":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImJoYXZlc2guc2FkaHVAZ21haWwuY29tIiwiaWF0IjoxNzQ4ODY1NDE3LCJleHAiOjE3NDg4NjYzMTd9.kmB4QKmVUEQM6gx_v5WlRY5HyT_SSrP9ku36QdoDwxk"
+}
+
+### SET NEW PASSWORD
+POST {{rootUrl}}/api/v1/users/setNewPassword
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImJoYXZlc2guc2FkaHVAZ21haWwuY29tIiwiaWF0IjoxNzQ4ODY1NDE3LCJleHAiOjE3NDg4NjYzMTd9.kmB4QKmVUEQM6gx_v5WlRY5HyT_SSrP9ku36QdoDwxk
+Content-Type: application/json
+
+{
+    "password":"Testingtesting@123"
+}
