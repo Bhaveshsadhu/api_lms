@@ -4,6 +4,7 @@ import cors from 'cors';
 import authRoutes from './src/routes/authRoutes.js'
 import { errorHandler } from './src/middleware/errorHandler.js';
 import userRoutes from './src/routes/userRoutes.js';
+import bookRouter from './src/routes/bookRoutes.js';
 
 
 // import dotenv from 'dotenv';
@@ -38,6 +39,8 @@ dbConnect().then(() => {
 app.use("/api/v1/auth", authRoutes);
 // Users END POINTS
 app.use("/api/v1/users", userRoutes);
+// Users END POINTS
+app.use("/api/v1/books", bookRouter);
 // Global Error handler
 app.use(errorHandler);
 

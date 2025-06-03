@@ -1,4 +1,5 @@
 @rootUrl = http://localhost:8000
+@accessToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImJoYXZlc2guc2FkaHVAZ21haWwuY29tIiwiaWF0IjoxNzQ4OTU3Nzc2LCJleHAiOjE3NDg5NTg2NzZ9.m5xs_DmZJAkLhlqL1UxTf8eBbzrSIKxrrEp8E9Q6I5o
 #API LIST
 
 ###CHECK SERVER STATUS
@@ -31,19 +32,19 @@ Content-Type: application/json
 
 {
     "email":"bhavesh.sadhu@gmail.com",
-    "password":"Testingtesting@12345678"
+    "password":"Testingtesting@123"
 }
 
 ### USER PROFILE
 GET {{rootUrl}}/api/v1/users/profile
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImJoYXZlc2guc2FkaHVAZ21haWwuY29tIiwiaWF0IjoxNzQ4NDIzMzU4LCJleHAiOjE3NDg0MjQyNTh9.ooEdQxcjWpsgNu5nfSnj8DrRiy-v7IR6JzJWNlRJNXY
+Authorization: Bearer {{accessToken}}
 ### RENEW ACCESSJWT
 GET {{rootUrl}}/api/v1/auth/renew-jwt
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImJoYXZlc2guc2FkaHVAZ21haWwuY29tIiwiaWF0IjoxNzQ4NDIzNDI1LCJleHAiOjE3NTEwMTU0MjV9.2QCoKPpC14fW7L_U1oG5qV2gp0ga6wL5yTa_SJsL7TA
+Authorization: Bearer {{accessToken}}
 
 ### Logout User
 GET {{rootUrl}}/api/v1/auth/logout
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImJoYXZlc2guc2FkaHVAZ21haWwuY29tIiwiaWF0IjoxNzQ4NDg1ODgyLCJleHAiOjE3NDg0ODY3ODJ9.CArfW7lkIYDyTj9HcZWS5pBe5rly0qjNr5HZmp5hRPY
+Authorization: Bearer {{accessToken}}
 
 ### FORGET PASSWORD 
 POST {{rootUrl}}/api/v1/users/forget-password
@@ -59,14 +60,60 @@ POST {{rootUrl}}/api/v1/users/reset-password
 Content-Type: application/json
 
 {
-    "token":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImJoYXZlc2guc2FkaHVAZ21haWwuY29tIiwiaWF0IjoxNzQ4ODY1NDE3LCJleHAiOjE3NDg4NjYzMTd9.kmB4QKmVUEQM6gx_v5WlRY5HyT_SSrP9ku36QdoDwxk"
+    "token":"{{accessToken}}"
 }
 
 ### SET NEW PASSWORD
 POST {{rootUrl}}/api/v1/users/setNewPassword
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImJoYXZlc2guc2FkaHVAZ21haWwuY29tIiwiaWF0IjoxNzQ4ODY1NDE3LCJleHAiOjE3NDg4NjYzMTd9.kmB4QKmVUEQM6gx_v5WlRY5HyT_SSrP9ku36QdoDwxk
+Authorization: Bearer {{accessToken}}
 Content-Type: application/json
 
 {
     "password":"Testingtesting@123"
 }
+
+### Books
+
+### Create a new book
+POST {{rootUrl}}/api/v1/books
+Content-Type: application/json
+Authorization: Bearer {{accessToken}}
+
+{
+  "title": "The Alchemist",
+  "author": "Paulo Coelho",
+  "isbn": "9780061122415",
+  "category": "Fiction",
+  "description": "A philosophical novel about destiny and self-discovery.",
+  "quantity": 5,
+  "available": 5,
+  "coverImage": "alchemist.jpg",
+  "addedBy": "660e2a54bb12a2d52c3f39a4"
+}
+
+### Get all books
+GET {{rootUrl}}/api/v1/books
+Authorization: Bearer {{accessToken}}
+
+### Get a single book by ID
+GET {{rootUrl}}/api/v1/books/683ef5c53f265fce08d8d8bd
+Authorization: Bearer {{accessToken}}
+
+### Update a book by ID
+PUT {{rootUrl}}/api/v1/books/683ef5c53f265fce08d8d8bd
+Content-Type: application/json
+Authorization: Bearer {{accessToken}}
+
+{
+  "title": "The Alchemist - Updated",
+  "available": 3,
+  "lastUpdatedBy": "660e2a54bb12a2d52c3f39a4"
+}
+
+### Delete a book by ID
+DELETE {{rootUrl}}/api/v1/books/683ef5c53f265fce08d8d8bd
+Authorization: Bearer {{accessToken}}
+
+### Search books by keyword
+GET {{rootUrl}}/api/v1/books/search/alchemist
+Authorization: Bearer {{accessToken}}
