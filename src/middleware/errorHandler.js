@@ -14,7 +14,8 @@ export const errorHandler = (err, req, res, next) => {
 
     if (err.code && err.code === 11000) {
         statusCode = 400;
-        message = 'Duplicate Email value entered.';
+        console.log(err.message)
+        message = 'Duplicate value entered.';
     }
 
     if (err.name === 'CastError') {

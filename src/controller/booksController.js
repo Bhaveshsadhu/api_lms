@@ -1,22 +1,45 @@
 import {
     createNewBook,
-    getAllBooks,
     getBookById,
     updateBookById,
     deleteBookById,
-    searchBooks
+    searchBooks,
+    getAllBooksForAdmin,
+    getAllBooksForUser
 } from '../models/books/booksModel.js';
 
 // CREATE
 export const createBookController = async (req, res, next) => {
     try {
-        const newBook = await createNewBook(req.body);
-        res.status(201).json({
-            status: 'success',
-            message: 'Book created successfully',
-            book: newBook
-        });
+        const user = req.userInfo
+
+        if (user?._id && user.role === "admin") {
+            const bookData = req.body;
+            bookData.addedBy = user._id
+            bookData.lastUpdatedBy = user._id
+
+            const newBook = await createNewBook(bookData);
+            res.json({
+                status: 'success',
+                message: 'Book created successfully',
+                book: newBook
+            });
+        }
+        else {
+            res.json({
+                status: 'Error',
+                message: 'You Are Not Authorized for this Transcation',
+
+            });
+        }
+
     } catch (error) {
+        if (error.code === 11000 && error.keyPattern?.isbn) {
+            return res.status(400).json({
+                status: "error",
+                message: "Duplicate ISBN. This book already exists.",
+            });
+        }
         next(error);
     }
 };
@@ -24,8 +47,18 @@ export const createBookController = async (req, res, next) => {
 // READ ALL
 export const getAllBooksController = async (req, res, next) => {
     try {
-        const books = await getAllBooks();
-        res.json({ status: 'success', books });
+        const user = req.userInfo;
+        // IF ROLE=ADMIN THEN GET ALL BOOKS
+        if (user?._id && user.role === "admin") {
+            const books = await getAllBooksForAdmin();
+            res.json({ status: 'success', books });
+        }
+        // IF ROLE=USER THEN GET ONLY AVAILABLE BOOKS
+        if (user?._id && user.role === "user") {
+            const books = await getAllBooksForUser();
+            res.json({ status: 'success', books });
+        }
+
     } catch (error) {
         next(error);
     }
@@ -47,7 +80,8 @@ export const getBookByIdController = async (req, res, next) => {
 // UPDATE
 export const updateBookByIdController = async (req, res, next) => {
     try {
-        const updatedBook = await updateBookById(req.params.id, req.body);
+        const { _id } = req.body
+        const updatedBook = await updateBookById(_id, req.body);
         if (!updatedBook) {
             return res.status(404).json({ status: 'error', message: 'Book not found to update' });
         }

@@ -46,3 +46,4 @@ export const ForgetPasswordValidation = (req, res, next) => {
     }
     DataValidation({ req, res, next, obj })
 }
+

@@ -1,5 +1,5 @@
 @rootUrl = http://localhost:8000
-@accessToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImJoYXZlc2guc2FkaHVAZ21haWwuY29tIiwiaWF0IjoxNzQ4OTU3Nzc2LCJleHAiOjE3NDg5NTg2NzZ9.m5xs_DmZJAkLhlqL1UxTf8eBbzrSIKxrrEp8E9Q6I5o
+@accessToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImJoYXZlc2guc2FkaHVAZ21haWwuY29tIiwiaWF0IjoxNzQ5NDY0NDAwLCJleHAiOjE3NDk0NjUzMDB9.9X_6roIOkZnldrMibXe_d3qwU89Q3GTZ4T55QMdCFO4
 #API LIST
 
 ###CHECK SERVER STATUS
@@ -80,18 +80,18 @@ Content-Type: application/json
 Authorization: Bearer {{accessToken}}
 
 {
-  "title": "The Alchemist",
-  "author": "Paulo Coelho",
-  "isbn": "9780061122415",
-  "category": "Fiction",
-  "description": "A philosophical novel about destiny and self-discovery.",
-  "quantity": 5,
-  "available": 5,
-  "coverImage": "alchemist.jpg",
-  "addedBy": "660e2a54bb12a2d52c3f39a4"
+  "title": "Eloquent JavaScript",
+  "author": "Marijn Haverbeke",
+  "isbn": "9781593279507",
+  "category": "Programming",
+  "description": "A Modern Introduction to Programming covering JavaScript fundamentals, advanced topics, and real-world projects.",
+  "quantity": 10,
+  "available": 10,
+  "coverImage": "eloquent-js.jpg"
 }
 
-### Get all books
+
+### Get all books - IF ROLE=ADMIN GET ALL BOOKS, IF ROLE=USER GET ONLY AVAILABLE BOOKS
 GET {{rootUrl}}/api/v1/books
 Authorization: Bearer {{accessToken}}
 
@@ -100,11 +100,12 @@ GET {{rootUrl}}/api/v1/books/683ef5c53f265fce08d8d8bd
 Authorization: Bearer {{accessToken}}
 
 ### Update a book by ID
-PUT {{rootUrl}}/api/v1/books/683ef5c53f265fce08d8d8bd
+PUT {{rootUrl}}/api/v1/books
 Content-Type: application/json
 Authorization: Bearer {{accessToken}}
 
 {
+    "_id":"683ef5c53f265fce08d8d8bd",
   "title": "The Alchemist - Updated",
   "available": 3,
   "lastUpdatedBy": "660e2a54bb12a2d52c3f39a4"

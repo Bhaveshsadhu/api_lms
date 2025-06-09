@@ -14,21 +14,34 @@ export const userMiddleware = async (req, res, next) => {
             const decoded = verifyAccessJWT(token)
             if (decoded.email) {
                 // check its exits in session table
-                const ifFound = await getSession({ token })
-                // console.log(ifFound)
-                if (ifFound?._id) {
-                    // get user by email
-                    const user = await findUserByEmail(decoded.email)
-                    if (user?._id && user?.status === "active") {
-                        // return the user
-                        req.userInfo = user
-                        return next()
-                    }
+                // const ifFound = await getSession({ token })
+                // if (ifFound?._id) {
+                //     // get user by email
+                //     const user = await findUserByEmail(decoded.email)
+                //     if (user?._id && user?.status === "active") {
+                //         // return the user
+                //         req.userInfo = user
+                //         return next()
+                //     }
+                // }
+                // else {
+                //     res.json({
+                //         status: "error",
+                //         message: "jwt expired"
+                //     })
+                // }
+
+                // get user by email
+                const user = await findUserByEmail(decoded.email)
+                if (user?._id && user?.status === "active") {
+                    // return the user
+                    req.userInfo = user
+                    return next()
                 }
                 else {
                     res.json({
                         status: "error",
-                        message: "jwt expired"
+                        message: "UnAuthorized"
                     })
                 }
             }

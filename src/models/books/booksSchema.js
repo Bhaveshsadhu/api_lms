@@ -18,7 +18,7 @@ const bookSchema = new mongoose.Schema({
     },
     category: {
         type: String,
-        enum: ["Fiction", "Non-Fiction", "Science", "Biography", "Technology", "Other", "Programming"],
+        enum: ["Fiction", "Non-Fiction", "Science", "Biography", "Technology", "Other", "Programming", "Adventure", "Math"],
         default: "Other",
     },
     description: {
@@ -32,7 +32,7 @@ const bookSchema = new mongoose.Schema({
     },
     available: {
         type: Number,
-        default: 1,
+        default: 0,
     },
     coverImage: {
         type: String, // URL or file path

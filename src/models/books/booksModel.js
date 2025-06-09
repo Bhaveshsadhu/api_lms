@@ -5,10 +5,15 @@ export const createNewBook = (bookObj) => {
     return BookSchema(bookObj).save();
 };
 
-// READ all books
-export const getAllBooks = () => {
+// READ all books for ADMIN
+export const getAllBooksForAdmin = () => {
     return BookSchema.find();
 };
+// GET ALL BOOKS FOR USER
+export const getAllBooksForUser = () => {
+    return BookSchema.find({ status: "available" });
+};
+
 
 // READ book by ID
 export const getBookById = (_id) => {
