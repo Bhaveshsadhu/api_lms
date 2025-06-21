@@ -34,6 +34,10 @@ const bookSchema = new mongoose.Schema({
         type: Number,
         default: 0,
     },
+    expected_date_available: {
+        type: Date,
+        // default: Date.now,
+    },
     coverImage: {
         type: String, // URL or file path
         default: "",
