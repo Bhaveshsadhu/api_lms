@@ -12,9 +12,9 @@ Content-Type: application/json
 {
     "fname":"Bhavesh",
     "lname":"Sadhu",
-    "email":"bhavesh.sadhu@gmail.com",
+    "email":"bhavesh2.sadhu@gmail.com",
     "phone":"0123456789",
-    "password":"TesAAa@123"
+    "password":"TesAAa@123TesAAa@123"
 }
 
 ### User Verification from Email

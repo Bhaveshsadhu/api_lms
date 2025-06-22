@@ -5,6 +5,8 @@ import authRoutes from './src/routes/authRoutes.js'
 import { errorHandler } from './src/middleware/errorHandler.js';
 import userRoutes from './src/routes/userRoutes.js';
 import bookRouter from './src/routes/bookRoutes.js';
+import path from "path";
+import { fileURLToPath } from "url";
 
 
 // import dotenv from 'dotenv';
@@ -33,6 +35,19 @@ dbConnect().then(() => {
             console.log(`Server running at http://localhost:${PORT}`);
     })
 }).catch((error) => console.log(error))
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+// Serve static images
+// ✅ Directly resolve uploads from current folder level
+const uploadsPath = path.resolve(__dirname, "public/uploads");
+
+// ✅ Serve static files on /uploads route
+app.use("/uploads", express.static(uploadsPath));
+
+// console.log(uploadsPath)
+// console.log("Serving static files from:", uploadsPath);
 
 
 // API END POINTS

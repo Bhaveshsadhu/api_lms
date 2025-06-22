@@ -12,11 +12,18 @@ import {
 export const createBookController = async (req, res, next) => {
     try {
         const user = req.userInfo
-
         if (user?._id && user.role === "admin") {
+            // console.log("Files:", req.files);
+            const files = req.files.map(file => `/uploads/${file.filename}`);
             const bookData = req.body;
+
             bookData.addedBy = user._id
             bookData.lastUpdatedBy = user._id
+            bookData.uploadedFiles = files
+            bookData.coverImage = files[0]
+
+            // console.log(bookData)
+
 
             const newBook = await createNewBook(bookData);
             res.json({
@@ -78,18 +85,121 @@ export const getBookByIdController = async (req, res, next) => {
 };
 
 // UPDATE
+// export const updateBookByIdController = async (req, res, next) => {
+//     try {
+//         const user = req.userInfo
+//         if (user?._id && user.role === "admin") {
+//             const bookData = req.body;
+//             const files = req.files.map(file => `/uploads/${file.filename}`);
+//             bookData.uploadedFiles = files
+//             bookData.coverImage = files[0]
+//             const { _id } = bookData
+//             console.log(bookData)
+//             const updatedBook = await updateBookById(_id, bookData);
+//             if (!updatedBook) {
+//                 return res.status(404).json({ status: 'error', message: 'Book not found to update' });
+//             }
+//             res.json({ status: 'success', message: 'Book updated successfully', book: updatedBook });
+//         }
+
+//     } catch (error) {
+//         next(error);
+//     }
+// };
+// controllers/bookController.js
+// import Book from '../models/bookModel.js';   // adjust path if different
+
 export const updateBookByIdController = async (req, res, next) => {
     try {
-        const { _id } = req.body
-        const updatedBook = await updateBookById(_id, req.body);
+        const user = req.userInfo;
+
+        /* ────────────────────────────────
+           1.  Only admins can update
+        ────────────────────────────────── */
+        if (!user?._id || user.role !== 'admin') {
+            return res
+                .status(403)
+                .json({ status: 'error', message: 'Unauthorised access' });
+        }
+
+        /* ────────────────────────────────
+           2.  Destructure body fields
+        ────────────────────────────────── */
+        const {
+            _id,                     // required
+            title,
+            author,
+            isbn,
+            category,
+            description,
+            quantity,
+            available,
+            ExpectedDateAvailable,
+            coverImage,              // may be a NEW coverImage path
+            existingImages           // ← sent as string or array from frontend
+        } = req.body;
+
+        /* ────────────────────────────────
+           3.  Load current book document
+        ────────────────────────────────── */
+        const book = await getBookById(_id);
+        if (!book) {
+            return res
+                .status(404)
+                .json({ status: 'error', message: 'Book not found' });
+        }
+
+        /* ────────────────────────────────
+           4.  Prepare image arrays
+        ────────────────────────────────── */
+        /* Incoming images already in DB */
+        let oldImages = existingImages || [];
+        if (typeof oldImages === 'string') oldImages = [oldImages];
+
+        /* New images just uploaded via Multer */
+        const newImages = req.files
+            ? req.files.map((file) => `/uploads/${file.filename}`)
+            : [];
+
+        const mergedImages = [...oldImages, ...newImages];
+
+        /* ────────────────────────────────
+           5.  Update document fields
+        ────────────────────────────────── */
+        book.title = title ?? book.title;
+        book.author = author ?? book.author;
+        book.isbn = isbn ?? book.isbn;
+        book.category = category ?? book.category;
+        book.description = description ?? book.description;
+        book.quantity = quantity ?? book.quantity;
+        book.available = available ?? book.available;
+        book.ExpectedDateAvailable = ExpectedDateAvailable ?? book.ExpectedDateAvailable;
+
+        /* Images */
+        book.uploadedFiles = mergedImages;
+        book.coverImage = coverImage || book.coverImage;  // keep old if none supplied
+
+        /* ────────────────────────────────
+           6.  Save & respond
+        ────────────────────────────────── */
+        // const saved = await book.save();
+        const updatedBook = await updateBookById(_id, book);
         if (!updatedBook) {
             return res.status(404).json({ status: 'error', message: 'Book not found to update' });
         }
         res.json({ status: 'success', message: 'Book updated successfully', book: updatedBook });
-    } catch (error) {
-        next(error);
+
+
+        // return res.json({
+        //     status: 'success',
+        //     message: 'Book updated successfully',
+        //     book: saved,
+        // });
+    } catch (err) {
+        return next(err);
     }
 };
+
 
 // DELETE
 export const deleteBookByIdController = async (req, res, next) => {
