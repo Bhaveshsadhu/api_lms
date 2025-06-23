@@ -56,6 +56,8 @@ const bookSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: "User",
         default: null,
+    }, uploadedFiles: {
+        type: mongoose.Schema.Types.Array
     }
 }, {
     timestamps: true, // includes createdAt and updatedAt

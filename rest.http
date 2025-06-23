@@ -1,5 +1,5 @@
 @rootUrl = http://localhost:8000
-@accessToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImJoYXZlc2guc2FkaHVAZ21haWwuY29tIiwiaWF0IjoxNzQ5NDY0NDAwLCJleHAiOjE3NDk0NjUzMDB9.9X_6roIOkZnldrMibXe_d3qwU89Q3GTZ4T55QMdCFO4
+@accessToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImJoYXZlc2guc2FkaHVAZ21haWwuY29tIiwiaWF0IjoxNzUwNjQyMjkzLCJleHAiOjE3NTA2NDMxOTN9.l3EksmPOYacspFQc1A2AOnnL13HQxdmoCGamY-8X-30
 #API LIST
 
 ###CHECK SERVER STATUS
@@ -12,9 +12,9 @@ Content-Type: application/json
 {
     "fname":"Bhavesh",
     "lname":"Sadhu",
-    "email":"bhavesh.sadhu@gmail.com",
+    "email":"bhavesh2.sadhu@gmail.com",
     "phone":"0123456789",
-    "password":"TesAAa@123"
+    "password":"TesAAa@123TesAAa@123"
 }
 
 ### User Verification from Email
@@ -118,3 +118,12 @@ Authorization: Bearer {{accessToken}}
 ### Search books by keyword
 GET {{rootUrl}}/api/v1/books/search/alchemist
 Authorization: Bearer {{accessToken}}
+
+### Delete an uploaded image file from a book
+DELETE {{rootUrl}}/api/v1/books/68589947cbb5060dd0aef374/uploaded-file
+Authorization: Bearer {{accessToken}}
+Content-Type: application/json
+
+{
+  "filePath": "/uploads/1750636890728-download.jpeg"
+}

@@ -10,8 +10,7 @@ export const insertBookDataValidation = (req, res, next) => {
         description: LONG_STR_REQ,
         quantity: QUANTITY_REQ,
         available: AVAILABLE_REQ,
-        coverImage: LONG_STR_REQ,
+        // coverImage: LONG_STR_REQ,
     }
-
     DataValidation({ req, res, next, obj })
 }
