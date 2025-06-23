@@ -1,3 +1,4 @@
+import { removeFileFromDisc } from '../middleware/multar/multerMiddleware.js';
 import {
     createNewBook,
     getBookById,
@@ -7,6 +8,7 @@ import {
     getAllBooksForAdmin,
     getAllBooksForUser
 } from '../models/books/booksModel.js';
+
 
 // CREATE
 export const createBookController = async (req, res, next) => {
@@ -41,6 +43,13 @@ export const createBookController = async (req, res, next) => {
         }
 
     } catch (error) {
+        // REMOVE FILES FROM DISC WHEN GET ERROR
+        const files = req.body.uploadedFiles
+        files.map((item) => {
+            removeFileFromDisc(item)
+            console.log("removed successfully", item)
+        })
+
         if (error.code === 11000 && error.keyPattern?.isbn) {
             return res.status(400).json({
                 status: "error",
@@ -84,30 +93,7 @@ export const getBookByIdController = async (req, res, next) => {
     }
 };
 
-// UPDATE
-// export const updateBookByIdController = async (req, res, next) => {
-//     try {
-//         const user = req.userInfo
-//         if (user?._id && user.role === "admin") {
-//             const bookData = req.body;
-//             const files = req.files.map(file => `/uploads/${file.filename}`);
-//             bookData.uploadedFiles = files
-//             bookData.coverImage = files[0]
-//             const { _id } = bookData
-//             console.log(bookData)
-//             const updatedBook = await updateBookById(_id, bookData);
-//             if (!updatedBook) {
-//                 return res.status(404).json({ status: 'error', message: 'Book not found to update' });
-//             }
-//             res.json({ status: 'success', message: 'Book updated successfully', book: updatedBook });
-//         }
 
-//     } catch (error) {
-//         next(error);
-//     }
-// };
-// controllers/bookController.js
-// import Book from '../models/bookModel.js';   // adjust path if different
 
 export const updateBookByIdController = async (req, res, next) => {
     try {
@@ -204,10 +190,28 @@ export const updateBookByIdController = async (req, res, next) => {
 // DELETE
 export const deleteBookByIdController = async (req, res, next) => {
     try {
+        const user = req.userInfo;
+        if (!user?._id || user.role !== 'admin') {
+            return res
+                .status(403)
+                .json({ status: 'error', message: 'Unauthorised access' });
+        }
+
+        // fetch book - to delete uploaded files images from disc
+        const booksData = await getBookById(req.params.id)
+        console.log("bookdata", booksData)
+        // REMOVE FILES FROM DISC WHEN GET ERROR
+        const files = booksData.uploadedFiles
+        files.map((item) => {
+            removeFileFromDisc(item)
+            // console.log("removed successfully", item)
+        })
+        // delete books from db
         const deletedBook = await deleteBookById(req.params.id);
         if (!deletedBook) {
             return res.status(404).json({ status: 'error', message: 'Book not found to delete' });
         }
+
         res.json({ status: 'success', message: 'Book deleted successfully' });
     } catch (error) {
         next(error);
@@ -224,3 +228,34 @@ export const searchBooksController = async (req, res, next) => {
         next(error);
     }
 };
+// Delete an uploaded image file from a book
+export const deleteUploadedImageController = async (req, res) => {
+    try {
+        const user = req.userInfo;
+
+        if (!user?._id || user.role !== 'admin') {
+            return res
+                .status(403)
+                .json({ status: 'error', message: 'Unauthorised access' });
+        }
+        const { filePath } = req.body;
+        // console.log(filePath)
+        if (!filePath)
+            return res.status(400).json({ message: 'filePath required in body' });
+
+        // 1️⃣ Remove the path from MongoDB array
+
+        await updateBookById(req.params.id, {
+            $pull: { uploadedFiles: filePath },
+        });
+
+        // remove file from disc
+        removeFileFromDisc(filePath)
+
+
+        res.json({ status: 'success', message: 'Image removed successfully' });
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ message: 'Server error' });
+    }
+}

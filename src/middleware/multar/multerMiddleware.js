@@ -28,3 +28,25 @@ const storage = multer.diskStorage({
 
 // Create multer instance
 export const upload = multer({ storage });
+
+// delete from disk storage
+export const removeFileFromDisc = (filePath) => {
+    const absolutePath = path.join(__dirname, "..", "..", "..", "public", filePath);
+    // console.log(absolutePath)
+    fs.stat(absolutePath, (err, stats) => {
+        if (err) {
+            if (err.code !== 'ENOENT') console.error('FS stat error:', err);
+            return;
+        }
+
+        if (stats.isFile()) {
+            fs.unlink(absolutePath, (unlinkErr) => {
+                if (unlinkErr) console.error('FS unlink error:', unlinkErr);
+            });
+        } else {
+            console.warn('Path is not a file:', absolutePath);
+        }
+    });
+
+
+}

@@ -19,7 +19,7 @@ const app = express()
 // app.use(cors());
 app.use(cors({
     origin: 'http://localhost:5173', // frontend origin
-    methods: ['GET', 'POST', 'OPTIONS', 'PUT'],
+    methods: ['GET', 'POST', 'OPTIONS', 'PUT', 'DELETE'],
     allowedHeaders: ['Content-Type', 'Authorization']
 }));
 app.use(express.json());
