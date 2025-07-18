@@ -60,6 +60,17 @@ export const createBookController = async (req, res, next) => {
     }
 };
 
+// Fetch all books for Display page
+
+export const getAllBooksToDisplay = async (req, res, next) => {
+    try {
+        const books = await getAllBooksForAdmin();
+        res.json({ status: 'success', books });
+    } catch (error) {
+        next(error);
+    }
+}
+
 // READ ALL
 export const getAllBooksController = async (req, res, next) => {
     try {

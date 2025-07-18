@@ -6,7 +6,8 @@ import {
     updateBookByIdController,
     deleteBookByIdController,
     searchBooksController,
-    deleteUploadedImageController
+    deleteUploadedImageController,
+    getAllBooksToDisplay
 } from '../controller/booksController.js';
 import { insertBookDataValidation } from '../middleware/validation/bookDataValidation.js';
 import { userMiddleware } from '../middleware/userMiddleware.js';
@@ -20,6 +21,9 @@ router.post('/', userMiddleware, insertBookDataValidation, upload.array("uploade
 
 // GET all books
 router.get('/', userMiddleware, getAllBooksController);
+
+// Get all books to display
+router.get('/getdisplaybooks', getAllBooksToDisplay)
 
 // GET book by ID
 router.get('/:id', getBookByIdController);
