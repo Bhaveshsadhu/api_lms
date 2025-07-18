@@ -5,6 +5,11 @@ export const createNewBook = (bookObj) => {
     return BookSchema(bookObj).save();
 };
 
+// ADD MULTIPLE BOOKS
+export const addBooks = (arrBooks) => {
+    return BookSchema.insertMany(arrBooks)
+}
+
 // READ all books for ADMIN
 export const getAllBooksForAdmin = () => {
     return BookSchema.find();

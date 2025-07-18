@@ -1,4 +1,4 @@
-@rootUrl = http://localhost:8000
+@rootUrl = http://localhost:8080
 @accessToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImJoYXZlc2guc2FkaHVAZ21haWwuY29tIiwiaWF0IjoxNzUwNjQyMjkzLCJleHAiOjE3NTA2NDMxOTN9.l3EksmPOYacspFQc1A2AOnnL13HQxdmoCGamY-8X-30
 #API LIST
 
@@ -89,6 +89,9 @@ Authorization: Bearer {{accessToken}}
   "available": 10,
   "coverImage": "eloquent-js.jpg"
 }
+
+### Get all books to display
+GET {{rootUrl}}/api/v1/books/getdisplaybooks
 
 
 ### Get all books - IF ROLE=ADMIN GET ALL BOOKS, IF ROLE=USER GET ONLY AVAILABLE BOOKS

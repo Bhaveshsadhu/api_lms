@@ -25,6 +25,10 @@ const bookSchema = new mongoose.Schema({
         type: String,
         default: "",
     },
+    rating: {
+        type: String,
+        default: "",
+    },
     quantity: {
         type: Number,
         required: true,
