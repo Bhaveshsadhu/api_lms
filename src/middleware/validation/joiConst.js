@@ -41,11 +41,11 @@ export const ISBN_REQ = Joi.string()
         'string.empty': 'ISBN is required',
     });
 
-export const QUANTITY = Joi.number().min(1).max(50)
-export const QUANTITY_REQ = Joi.number().min(1).max(50)
+export const AVAILABLEQUANTITY = Joi.number().min(1).max(50)
+export const AVAILABLEQUANTITY_REQ = Joi.number().min(1).max(50)
 
-export const AVAILABLE = Joi.number().min(1).max(50)
-export const AVAILABLE_REQ = Joi.number().min(1).max(50)
+export const BORROWEDQUANTITY = Joi.number().min(1).max(50)
+export const BORROWEDQUANTITY_REQ = Joi.number().min(0).max(50)
 
 
 
