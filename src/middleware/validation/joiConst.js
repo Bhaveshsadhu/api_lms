@@ -1,4 +1,5 @@
 import Joi from 'joi'
+import { now } from 'mongoose'
 
 
 // USER REGISTRATION FORM CONSTS
@@ -47,17 +48,17 @@ export const AVAILABLEQUANTITY_REQ = Joi.number().min(1).max(50)
 export const BORROWEDQUANTITY = Joi.number().min(1).max(50)
 export const BORROWEDQUANTITY_REQ = Joi.number().min(0).max(50)
 
+export const PUBDATE_REQ = Joi.date()
+    .iso()               // must be ISO 8601 (YYYY‑MM‑DD[…])
+    .max('now')          // no future dates
+    .required()
+    .messages({
+        'date.base': `"publicationDate" should be a valid date`,
+        'date.format': `"publicationDate" must be in ISO format (YYYY-MM-DD)`,
+        'date.max': `"publicationDate" cannot be in the future`,
+        'any.required': `"publicationDate" is required`
+    })
 
 
-// {
-//   "title": "Eloquent JavaScript",
-//   "author": "Marijn Haverbeke",
-//   "isbn": "9781593279507",
-//   "category": "Programming",
-//   "description": "A Modern Introduction to Programming covering JavaScript fundamentals, advanced topics, and real-world projects.",
-//   "quantity": 10,
-//   "available": 10,
-//   "coverImage": "eloquent-js.jpg",
-//   "addedBy": "660e2a54bb12a2d52c3f39a2"
-// }
+
 

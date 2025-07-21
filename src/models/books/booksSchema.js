@@ -40,7 +40,10 @@ const bookSchema = new mongoose.Schema({
     },
     expected_date_available: {
         type: Date,
-        // default: Date.now,
+    },
+    pubDate: {
+        type: Date,
+        required: true
     },
     coverImage: {
         type: String, // URL or file path
@@ -60,7 +63,8 @@ const bookSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: "User",
         default: null,
-    }, uploadedFiles: {
+    }
+    , uploadedFiles: {
         type: mongoose.Schema.Types.Array
     }
 }, {
