@@ -3,11 +3,14 @@ import { forgetPasswordEmailTemplate, userActivatedEmailTemplate, userActivation
 
 export const userActivationUrlEmail = async (obj) => {
     const transport = emailTransporter();
+    // console.log("Transport:", transport)
+
+    // console.log("OBJ", obj)
 
     const info = await transport.sendMail(
         userActivationUrlEmailTemplate(obj)
     )
-    // console.log(info.messageId)
+    // console.log("Info: ", info)
     return info.messageId;
 };
 export const userActivatedEmail = async (obj) => {

@@ -2,6 +2,12 @@
 @accessToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImJoYXZlc2guc2FkaHVAZ21haWwuY29tIiwiaWF0IjoxNzUwNjQyMjkzLCJleHAiOjE3NTA2NDMxOTN9.l3EksmPOYacspFQc1A2AOnnL13HQxdmoCGamY-8X-30
 #API LIST
 
+### CREDENTIAL FOR TESTING
+
+### USER - gula@mailinator.com - Testing@testing12c3@
+
+### ADMIN - bhavesh.sadhu@gmail.com - Testingtesting@123
+
 ###CHECK SERVER STATUS
 GET {{rootUrl}}
 
