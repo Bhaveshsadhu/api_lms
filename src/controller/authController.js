@@ -36,6 +36,7 @@ export const addNewUser = async (req, res, next) => {
                 token: uuidv4(),
                 association: result.email
             })
+            // console.log("Sesion ID:", session)
 
             if (session?._id) {
                 const url = `${process.env.ROOT_URL}/activate-user?sessionId=${session._id}&t=${session.token}`
@@ -48,7 +49,10 @@ export const addNewUser = async (req, res, next) => {
                     url,
                     name: result.fname,
                 })
+                // console.log("email id:", emailID)
+
                 if (emailID) {
+
                     res.json({
                         status: "success",
                         message: "We have send Verification link to your email please check your email",

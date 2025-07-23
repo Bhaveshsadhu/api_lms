@@ -32,7 +32,6 @@ export const VerifyUserFromEmailDataValidation = (req, res, next) => {
 }
 
 export const LoginDataValidation = (req, res, next) => {
-    console.log("yes this is validation")
 
     const obj = {
         email: EMAIL_REQ,
