@@ -6,8 +6,11 @@ import {
     deleteBookById,
     searchBooks,
     getAllBooksForAdmin,
-    getAllBooksForUser
+    getAllBooksForUser,
+    getBooksByIds,
+    updateBookQuantities
 } from '../models/books/booksModel.js';
+import { borrowBooks } from '../models/books/borrowBookModel.js';
 
 
 // CREATE
@@ -268,5 +271,77 @@ export const deleteUploadedImageController = async (req, res) => {
     } catch (err) {
         console.error(err);
         res.status(500).json({ message: 'Server error' });
+    }
+}
+
+// BORROW BOOOKS
+export const borrowBooksController = async (req, res, next) => {
+    try {
+        const user = req.userInfo
+        // check user is valid
+        if (user?._id || user.role === "user" || user.role === "student") {
+            const borrow = req.body
+            const { books, loanPeriod } = req.body;
+            // check if book availabe for borrow
+            const bookIds = books.map(book => book._id);
+            console.log(bookIds)
+            const fullBooks = await getBooksByIds(bookIds);
+
+            // console.log(fullBooks)
+
+            const unavailableBooks = fullBooks.filter(book => book.availableQuantity === 0);
+
+            if (unavailableBooks.length !== 0) {
+                return res.json({
+                    status: "error",
+                    message: "Some books were not available",
+                    unavailableBooks
+                });
+            }
+
+            //  update the available quantity 
+            const fullBooksWithQuantity = fullBooks.map(book => {
+                const match = books.find(b => String(b._id) === String(book._id));
+                return {
+                    ...book.toObject(),  // convert Mongoose doc to plain JS object
+                    quantity: match?.quantity || 1 // default to 1 if quantity not provided
+                };
+            });
+
+            const updateQuantity = await updateBookQuantities(fullBooksWithQuantity);
+
+
+            // pull book data out what requires
+            const bookData = books.map(book => ({
+                _id: book._id,
+                title: book.title,
+                coverImage: book.coverImage,
+                quantity: book.quantity
+            }));
+            const dueDate = new Date();
+            dueDate.setDate(dueDate.getDate() + Number(loanPeriod));
+
+            borrow.userId = user._id
+            borrow.bookData = bookData
+            borrow.loanPeriod = loanPeriod
+            borrow.borrowDate = new Date()
+            borrow.dueDate = dueDate;
+            borrow.returned = false;
+            borrow.returnedDate = "";
+
+
+
+            const result = await borrowBooks(borrow)
+
+
+            return res.json({
+                status: "success",
+                message: "Borrow success",
+                result
+            })
+        }
+
+    } catch (error) {
+        return next(error)
     }
 }

@@ -1,5 +1,5 @@
 @rootUrl = http://localhost:8080
-@accessToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImJoYXZlc2guc2FkaHVAZ21haWwuY29tIiwiaWF0IjoxNzUwNjQyMjkzLCJleHAiOjE3NTA2NDMxOTN9.l3EksmPOYacspFQc1A2AOnnL13HQxdmoCGamY-8X-30
+@accessToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Imd1bGFAbWFpbGluYXRvci5jb20iLCJpYXQiOjE3NTMzNzI5MjQsImV4cCI6MTc1MzM3MzgyNH0.LWTduySlJwOdB3jCrDQw-HpT1BTob4yK6uGznsbYhsA
 #API LIST
 
 ### CREDENTIAL FOR TESTING
@@ -37,8 +37,8 @@ POST {{rootUrl}}/api/v1/auth/login
 Content-Type: application/json
 
 {
-    "email":"bhavesh.sadhu@gmail.com",
-    "password":"Testingtesting@123"
+    "email":"gula@mailinator.com",
+    "password":"Testing@testing12c3@"
 }
 
 ### USER PROFILE
@@ -135,4 +135,28 @@ Content-Type: application/json
 
 {
   "filePath": "/uploads/1750636890728-download.jpeg"
+}
+
+### Borrow Books
+POST {{rootUrl}}/api/v1/books/borrow
+Authorization: Bearer {{accessToken}}
+Content-Type: application/json
+
+{
+  "userId": "6880aca7fe576eb0f753b54a",
+  "loanPeriod": 14,
+  "books": [
+    {
+      "_id": "688235e0a4c39a732cae4099",
+      "title": "Clean Code",
+      "coverImage": "/uploads/1753364135802-0008508178-L.jpg",
+      "quantity":"2"
+    },
+    {
+      "_id": "688235e0a4c39a732cae409a",
+      "title": "Eloquent JavaScript",
+      "coverImage": "/uploads/1753364188458-0009245523-L.jpg",
+      "quantity":"2"
+    }
+  ]
 }

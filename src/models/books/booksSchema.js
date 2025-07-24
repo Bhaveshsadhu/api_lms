@@ -38,9 +38,6 @@ const bookSchema = new mongoose.Schema({
         type: Number,
         default: 0,
     },
-    expected_date_available: {
-        type: Date,
-    },
     pubDate: {
         type: Date,
         required: true
@@ -66,7 +63,11 @@ const bookSchema = new mongoose.Schema({
     }
     , uploadedFiles: {
         type: mongoose.Schema.Types.Array
-    }
+    },
+    ExpectedDateAvailable: {
+        type: Date,
+        required: true
+    },
 }, {
     timestamps: true, // includes createdAt and updatedAt
 });
