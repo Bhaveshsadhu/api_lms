@@ -7,7 +7,8 @@ import {
     deleteBookByIdController,
     searchBooksController,
     deleteUploadedImageController,
-    getAllBooksToDisplay
+    getAllBooksToDisplay,
+    borrowBooksController
 } from '../controller/booksController.js';
 import { insertBookDataValidation } from '../middleware/validation/bookDataValidation.js';
 import { userMiddleware } from '../middleware/userMiddleware.js';
@@ -39,5 +40,8 @@ router.get('/search/:keyword', searchBooksController);
 
 // Delete an uploaded image file from a book
 router.delete('/:id/uploaded-file', userMiddleware, deleteUploadedImageController)
+
+// Borrow Books
+router.post("/borrow", userMiddleware, borrowBooksController)
 
 export default router;

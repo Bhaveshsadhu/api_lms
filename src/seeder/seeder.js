@@ -18,7 +18,9 @@ export const dummyBooks = [
         status: "available",
         addedBy: "64a1f3e8d7a4b5c6d7e8f901",
         lastUpdatedBy: null,
-        uploadedFiles: []
+        uploadedFiles: [],
+        ExpectedDateAvailable: "2025-08-10",
+        pubDate: "2020-01-01",
     },
     {
         title: "Eloquent JavaScript",
@@ -33,7 +35,10 @@ export const dummyBooks = [
         status: "available",
         addedBy: "64a1f3e8d7a4b5c6d7e8f902",
         lastUpdatedBy: null,
-        uploadedFiles: []
+        uploadedFiles: [],
+        ExpectedDateAvailable: "2025-08-10",
+        pubDate: "2020-01-01",
+
     },
     {
         title: "You Don’t Know JS: Up & Going",
@@ -48,7 +53,10 @@ export const dummyBooks = [
         status: "available",
         addedBy: "64a1f3e8d7a4b5c6d7e8f903",
         lastUpdatedBy: null,
-        uploadedFiles: []
+        uploadedFiles: [],
+        ExpectedDateAvailable: "2025-08-10",
+        pubDate: "2020-01-01",
+
     },
     {
         title: "The Pragmatic Programmer",
@@ -63,7 +71,10 @@ export const dummyBooks = [
         status: "available",
         addedBy: "64a1f3e8d7a4b5c6d7e8f904",
         lastUpdatedBy: null,
-        uploadedFiles: []
+        uploadedFiles: [],
+        ExpectedDateAvailable: "2025-08-10",
+        pubDate: "2020-01-01",
+
     },
     {
         title: "Design Patterns",
@@ -78,7 +89,9 @@ export const dummyBooks = [
         status: "available",
         addedBy: "64a1f3e8d7a4b5c6d7e8f905",
         lastUpdatedBy: null,
-        uploadedFiles: []
+        uploadedFiles: [],
+        ExpectedDateAvailable: "2025-08-10",
+        pubDate: "2020-01-01",
     },
     {
         title: "Refactoring",
@@ -93,7 +106,9 @@ export const dummyBooks = [
         status: "available",
         addedBy: "64a1f3e8d7a4b5c6d7e8f906",
         lastUpdatedBy: null,
-        uploadedFiles: []
+        uploadedFiles: [],
+        ExpectedDateAvailable: "2025-08-10",
+        pubDate: "2020-01-01",
     },
     {
         title: "Introduction to Algorithms",
@@ -108,7 +123,9 @@ export const dummyBooks = [
         status: "available",
         addedBy: "64a1f3e8d7a4b5c6d7e8f907",
         lastUpdatedBy: null,
-        uploadedFiles: []
+        uploadedFiles: [],
+        ExpectedDateAvailable: "2025-08-10",
+        pubDate: "2020-01-01",
     },
     {
         title: "JavaScript: The Good Parts",
@@ -123,7 +140,9 @@ export const dummyBooks = [
         status: "available",
         addedBy: "64a1f3e8d7a4b5c6d7e8f908",
         lastUpdatedBy: null,
-        uploadedFiles: []
+        uploadedFiles: [],
+        ExpectedDateAvailable: "2025-08-10",
+        pubDate: "2020-01-01",
     },
     {
         title: "Programming Pearls",
@@ -138,7 +157,9 @@ export const dummyBooks = [
         status: "available",
         addedBy: "64a1f3e8d7a4b5c6d7e8f909",
         lastUpdatedBy: null,
-        uploadedFiles: []
+        uploadedFiles: [],
+        ExpectedDateAvailable: "2025-08-10",
+        pubDate: "2020-01-01",
     },
     {
         title: "Code Complete",
@@ -153,7 +174,9 @@ export const dummyBooks = [
         status: "available",
         addedBy: "64a1f3e8d7a4b5c6d7e8f910",
         lastUpdatedBy: null,
-        uploadedFiles: []
+        uploadedFiles: [],
+        ExpectedDateAvailable: "2025-08-10",
+        pubDate: "2020-01-01",
     }
 ];
 
@@ -164,14 +187,15 @@ const SeedBooks = async () => {
         console.log("Connecting to Db")
         await dbConnect()
         console.log("Db connection is done")
-        await addBooks(dummyBooks);
+        const result = await addBooks(dummyBooks);
+        // console.log("Result is : ", result)
         console.log(`${dummyBooks.length} books created`);
     } catch (error) {
         console.error(' Seeding failed:', err.message);
         process.exit(1);
     }
     finally {
-        console.log(' Disconnecting…');
+        console.log(' Disconnected');
         process.exit(0);
     }
 }
